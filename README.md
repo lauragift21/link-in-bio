@@ -63,8 +63,14 @@ To update your links:
 
 Example:
 
-```html
-<a href="https://your-link.com" target="_blank">Your Link Text</a>
+```js
+const links = [
+  {
+    title: 'Website',
+    url: 'https://giftegwuenu.com',
+    icon: 'https://api.iconify.design/mdi:web.svg?color=white',
+  },
+];
 ```
 
 ### **Customizing the Layout**
