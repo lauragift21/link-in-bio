@@ -1,19 +1,112 @@
 ---
-interface Props {
-  name: string;
-  bio: string;
-  avatar: string;
+interface SocialLink {
+  url: string;
+  icon: string;
+  label: string;
 }
 
-const { name, bio, avatar } = Astro.props;
+interface Props {
+  name: string;
+  tagline: string;
+  bio: string;
+  avatar: string;
+  email: string;
+  socials: SocialLink[];
+}
+
+const { name, tagline, bio, avatar, email, socials } = Astro.props;
 ---
 
-<div class="text-center mb-10">
-  <img
-    src={avatar}
-    alt={name}
-    class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-white/20"
-  />
-  <h1 class="text-2xl font-bold text-white mb-2">{name}</h1>
-  <p class="text-white/80">{bio}</p>
-</div>
+<section class="relative pt-24 pb-20 text-center">
+  <!-- Animated aura behind avatar -->
+  <div class="relative inline-block mb-10">
+    <div class="absolute inset-0 -m-6 rounded-full bg-gradient-to-br from-terracotta/30 via-warm-gold/20 to-warm-rose/30 blur-2xl animate-aura-pulse"></div>
+    <div class="absolute inset-0 -m-3 rounded-full bg-gradient-to-tr from-terracotta/25 via-warm-gold/20 to-warm-rose/25 animate-aura-spin blur-xl"></div>
+    <img
+      src={avatar}
+      alt={name}
+      class="relative w-36 h-36 rounded-full object-cover ring-4 ring-warm-cream shadow-2xl shadow-terracotta/20 animate-hero-entrance"
+    />
+    <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-terracotta ring-4 ring-warm-cream animate-hero-entrance-delay"></div>
+  </div>
+
+  <h1 class="font-display text-5xl md:text-7xl font-bold text-warm-900 mb-4 animate-hero-title leading-[1.1]">
+    {name}
+  </h1>
+
+  <div class="flex items-center justify-center gap-4 mb-8 animate-hero-tagline">
+    <div class="w-8 h-px bg-gradient-to-r from-transparent to-terracotta/40"></div>
+    <p class="text-sm tracking-[0.25em] uppercase text-warm-500 font-medium">{tagline}</p>
+    <div class="w-8 h-px bg-gradient-to-l from-transparent to-terracotta/40"></div>
+  </div>
+
+  <p class="max-w-sm mx-auto text-warm-600 leading-relaxed mb-8 animate-hero-bio text-[0.95rem]">{bio}</p>
+
+  <!-- Social icons -->
+  <div class="flex items-center justify-center gap-3 mb-10 animate-hero-socials">
+    {socials.map((social) => (
+      <a
+        href={social.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={social.label}
+        class="w-10 h-10 rounded-full bg-warm-800 flex items-center justify-center hover:bg-terracotta transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-terracotta/25"
+      >
+        <img src={social.icon} alt="" class="w-[18px] h-[18px]" />
+      </a>
+    ))}
+  </div>
+
+  <a
+    href={`mailto:${email}`}
+    class="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-warm-900 text-warm-cream text-sm font-medium tracking-wide hover:bg-terracotta transition-all duration-300 hover:shadow-xl hover:shadow-terracotta/20 hover:scale-[1.02] animate-hero-cta"
+  >
+    <span>Get in Touch</span>
+    <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+  </a>
+</section>
+
+<div class="w-10 h-px bg-warm-200/60 mx-auto my-4"></div>
+
+<style>
+  @keyframes hero-entrance {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes hero-title {
+    0% { opacity: 0; transform: translateY(30px); letter-spacing: 0.1em; }
+    100% { opacity: 1; transform: translateY(0); letter-spacing: 0; }
+  }
+  @keyframes hero-tagline {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-bio {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-cta {
+    0% { opacity: 0; transform: translateY(15px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes aura-pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+  @keyframes aura-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .animate-hero-entrance { animation: hero-entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+  .animate-hero-entrance-delay { animation: hero-entrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+  .animate-hero-title { animation: hero-title 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+  .animate-hero-tagline { animation: hero-tagline 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+  .animate-hero-bio { animation: hero-bio 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
+  .animate-hero-socials { animation: hero-bio 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both; }
+  .animate-hero-cta { animation: hero-cta 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both; }
+  .animate-aura-pulse { animation: aura-pulse 3s ease-in-out infinite; }
+  .animate-aura-spin { animation: aura-spin 12s linear infinite; }
+</style>
